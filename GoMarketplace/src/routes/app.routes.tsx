@@ -16,7 +16,7 @@ const AppRoutes: React.FC = () => (
   <App.Navigator
     screenOptions={{
       headerShown: true,
-      cardStyle: { backgroundColor: '#FFFF00' },
+      cardStyle: { backgroundColor: '##a1c4d4' },
       // cardStyle: { backgroundColor: '#EBEEF8' },
     }}
     initialRouteName="Dashboard"
