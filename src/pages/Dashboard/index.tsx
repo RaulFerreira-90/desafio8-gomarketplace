@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 
-import AsyncStorage from '@react-native-community/async-storage';
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
 import api from '../../services/api';
@@ -37,19 +36,9 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      try {
-        await AsyncStorage.removeItem('@GoMarketPlace:product');
+      const response = await api.get('/products');
 
-        const response = await api.get<Product[]>('/products');
-
-        const data = response.data.map(prod => {
-          return { ...prod, formatPrice: formatValue(prod.price), quantity: 1 };
-        });
-
-        setProducts(data);
-      } catch (err) {
-        Alert.alert('Atenção', 'Erro ao carregar produtos');
-      }
+      setProducts(response.data);
     }
 
     loadProducts();
@@ -74,7 +63,7 @@ const Dashboard: React.FC = () => {
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitle>{item.title}</ProductTitle>
               <PriceContainer>
-                <ProductPrice>{item.formatPrice}</ProductPrice>
+                <ProductPrice>{formatValue(item.price)}</ProductPrice>
                 <ProductButton
                   testID={`add-to-cart-${item.id}`}
                   onPress={() => handleAddToCart(item)}

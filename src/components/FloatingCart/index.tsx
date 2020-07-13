@@ -26,10 +26,11 @@ const FloatingCart: React.FC = () => {
 
   const cartTotal = useMemo(() => {
     // RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
-    const calculaTotal = products.reduce(
-      (total, product) => total + product.quantity * product.price,
-      0,
-    );
+    const calculaTotal = products.reduce((accumulator, product) => {
+      const productSubTotal = product.price * product.quantity;
+
+      return accumulator + productSubTotal;
+    }, 0);
 
     return formatValue(calculaTotal);
   }, [products]);
@@ -37,10 +38,11 @@ const FloatingCart: React.FC = () => {
   const totalItensInCart = useMemo(() => {
     // RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
 
-    const sumQuantity = products.reduce(
-      (total, product) => total + product.quantity,
-      0,
-    );
+    const sumQuantity = products.reduce((accumulator, product) => {
+      const productQuantity = product.quantity;
+
+      return accumulator + productQuantity;
+    }, 0);
 
     return sumQuantity;
   }, [products]);
